@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+import { Badge } from "@/components/ui/badge"
 
 export default function ProfileForm({ user }: { user: any }) {
   const router = useRouter();
@@ -93,6 +94,11 @@ export default function ProfileForm({ user }: { user: any }) {
             defaultValue={user.email}
             className="w-full p-2 border rounded"
           />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="role">Rôle</label>
+          <Badge variant="outline" id="role" className="w-fit">{user.role.toLowerCase()}</Badge>
         </div>
 
         <div className="flex gap-4">
