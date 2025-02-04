@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -15,10 +16,10 @@ export default function RegisterForm() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify({
-          prenom: formData.get('prenom'),
-          nom: formData.get('nom'),
+          first_name: formData.get('first_name'),
+          last_name: formData.get('last_name'),
           email: formData.get('email'),
-          motdepasse: formData.get('motdepasse'),
+          password: formData.get('password'),
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +27,7 @@ export default function RegisterForm() {
       });
 
       if (res.ok) {
-        router.push('/login');
+        router.push('/account');
       } else {
         const data = await res.json();
         setError(data.error);
@@ -41,22 +42,22 @@ export default function RegisterForm() {
       {error && <div className="text-red-500">{error}</div>}
       
       <div>
-        <label htmlFor="prenom">Prénom</label>
+        <label htmlFor="first_name">Prénom</label>
         <input
           type="text"
-          id="prenom"
-          name="prenom"
+          id="first_name"
+          name="first_name"
           required
           className="w-full p-2 border rounded"
         />
       </div>
 
       <div>
-        <label htmlFor="nom">Nom</label>
+        <label htmlFor="last_name">Nom</label>
         <input
           type="text"
-          id="nom"
-          name="nom"
+          id="last_name"
+          name="last_name"
           required
           className="w-full p-2 border rounded"
         />
@@ -74,22 +75,22 @@ export default function RegisterForm() {
       </div>
 
       <div>
-        <label htmlFor="motdepasse">Mot de passe</label>
+        <label htmlFor="password">Mot de passe</label>
         <input
           type="password"
-          id="motdepasse"
-          name="motdepasse"
+          id="password"
+          name="password"
           required
           className="w-full p-2 border rounded"
         />
       </div>
 
-      <button
+      <Button
         type="submit"
         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
       >
         S'inscrire
-      </button>
+      </Button>
     </form>
   );
 } 

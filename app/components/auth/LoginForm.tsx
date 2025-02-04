@@ -3,6 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function LoginForm() {
     if (result?.error) {
       setError('Email ou mot de passe incorrect');
     } else {
-      router.push('/profile');
+      router.push('/account');
       router.refresh();
     }
   };
@@ -52,12 +53,12 @@ export default function LoginForm() {
         />
       </div>
 
-      <button
+      <Button
         type="submit"
         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
       >
         Se connecter
-      </button>
+      </Button>
     </form>
   );
 } 
