@@ -2,9 +2,9 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Edit, Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { EditActivitySheet } from "@/components/activities/EditActivitySheet";
+import { DialogEditActivity } from "@/components/activities/DialogEditActivity";
 
 export default function ManageActivitiesPage() {
   const router = useRouter();
@@ -12,7 +12,11 @@ export default function ManageActivitiesPage() {
   interface Activity {
     id: string;
     name: string;
-    type: string;
+    typeId?: string;
+    type: {
+      id: string;
+      name: string;
+    };
     available_places: number;
     description: string;
     duration: number;
@@ -20,12 +24,13 @@ export default function ManageActivitiesPage() {
   }
   const [activities, setActivities] = useState<Activity[]>([]);
   
+  const fetchActivities = async () => {
+    const response = await fetch('/api/activities');
+    const data = await response.json();
+    setActivities(data);
+  };
+
   useEffect(() => {
-    const fetchActivities = async () => {
-      const response = await fetch('/api/activities');
-      const data = await response.json();
-      setActivities(data);
-    };
     fetchActivities();
   }, []);
 
@@ -81,7 +86,7 @@ export default function ManageActivitiesPage() {
                 <td className="px-6 py-4">{activity.duration}</td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    <EditActivitySheet 
+                    <DialogEditActivity 
                       activity={activity}
                       onUpdate={() => {
                         // Rafraîchir la liste des activités
