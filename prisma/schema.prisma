@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String        @id @default(cuid())
+  first_name    String
+  last_name     String
+  email         String        @unique
+  password      String
+  role          String
+  reservations  Reservation[]
+}
+
+model ActivityType {
+  id        String     @id @default(cuid())
+  name       String
+  activities Activity[]
+}
+
+model Activity {
+  id                String        @id @default(cuid())
+  name               String
+  type             ActivityType  @relation(fields: [typeId], references: [id])
+  typeId           String
+  available_places Int
+  description      String
+  datetime_debut   DateTime
+  duration           Int           // en minutes
+  reservations     Reservation[]
+}
+
+model Reservation {
+  id               String    @id @default(cuid())
+  user             User      @relation(fields: [user_id], references: [id])
+  user_id          String
+  activity         Activity  @relation(fields: [activity_id], references: [id])
+  activity_id      String
+  booking_date     DateTime  @default(now())
+  status           Boolean   @default(true)
+}
