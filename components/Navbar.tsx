@@ -23,7 +23,7 @@ export function Navbar() {
 
           {session ? (
             <div className="flex items-center gap-4">
-              <Avatar>
+              {/* <Avatar>
                 <AvatarFallback>
                   {session?.user?.name ? (
                     session.user.name.split(' ').map(n => n?.[0]).join('').toUpperCase()
@@ -31,9 +31,15 @@ export function Navbar() {
                     <img src="/account.svg" alt="Account" />
                   )}
                 </AvatarFallback>
-              </Avatar>
+              </Avatar> */}
               
               <div className="flex items-center gap-2">
+              <Link 
+                  href="/reservations" 
+                  className="text-sm hover:text-primary transition-colors"
+                >
+                  Mes réservations
+                </Link>
                 <Link 
                   href="/account" 
                   className="text-sm hover:text-primary transition-colors"

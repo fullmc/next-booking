@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { ArrowLeft, Clock, MapPin, Euro } from "lucide-react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { DialogMakeReservation } from '@/components/activities/DialogMakeReservation';
 
 interface Activity {
   id: string;
@@ -83,9 +84,10 @@ export default function ActivityDetailPage() {
         </CardContent>
         <CardFooter className="flex justify-between items-center">
           <span className="text-xl font-bold">{activity.available_places} places disponibles</span>
-          <button className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition-colors">
-            Réserver
-          </button>
+          <DialogMakeReservation 
+            activityId={activity.id} 
+            activityName={activity.name}
+          />
         </CardFooter>
       </Card>
     </div>
