@@ -18,6 +18,7 @@ interface Activity {
   description: string;
   duration: number;
   datetime_debut: Date;
+  image: string;
 }
 
 export default function ActivityDetailPage() {
@@ -68,6 +69,7 @@ export default function ActivityDetailPage() {
             <img
               alt={activity.name}
               className="object-cover w-full h-full rounded-lg"
+              src={activity.image}
             />
           </div>
           <p className="text-gray-700">{activity.description}</p>
@@ -78,7 +80,7 @@ export default function ActivityDetailPage() {
             </div>
             <div>
               <span className="font-semibold">Durée:</span>
-              <p>{activity.duration} minutes</p>
+              <p>{activity.duration} heures</p>
             </div>
           </div>
         </CardContent>

@@ -25,11 +25,13 @@ interface Activity {
   description: string;
   duration: number;
   datetime_debut: Date;
+  image: string;
 }
 
 export default function ActivitiesPage() {
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const [selectedType, setSelectedType] = useState<string | null>(null);
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === 'ADMIN';
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -52,9 +54,13 @@ export default function ActivitiesPage() {
     fetchActivities();
   }, []);
 
+  // Obtenir les types uniques d'activités
+  const uniqueTypes = Array.from(new Set(activities.map(activity => activity.type?.name))).filter(Boolean) as string[];
+
   const filteredActivities = activities.filter(activity =>
-    activity.name.toLowerCase().includes(search.toLowerCase()) ||
-    activity.description.toLowerCase().includes(search.toLowerCase())
+    (selectedType ? activity.type?.name === selectedType : true) &&
+    (activity.name.toLowerCase().includes(search.toLowerCase()) ||
+    activity.description.toLowerCase().includes(search.toLowerCase()))
   );
 
   if (loading) {
@@ -87,6 +93,33 @@ export default function ActivitiesPage() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
+
+        {/* Filtres rapides */}
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={() => setSelectedType(null)}
+            className={`px-4 py-2 rounded-full text-sm ${
+              selectedType === null
+                ? 'bg-primary text-white'
+                : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+          >
+            Tout
+          </button>
+          {uniqueTypes.map((type) => (
+            <button
+              key={type}
+              onClick={() => setSelectedType(type)}
+              className={`px-4 py-2 rounded-full text-sm ${
+                selectedType === type
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Grille d'activités */}
@@ -97,6 +130,7 @@ export default function ActivitiesPage() {
               <img
                 alt={activity.name}
                 className="object-cover w-full h-full"
+                src={activity.image}
               />
             </div>
             <CardHeader>
