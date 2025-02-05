@@ -63,25 +63,29 @@ export async function DELETE(
 
 // GET /api/activities/[id]
 export async function GET(
-  req: Request,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (session?.user?.role !== 'ADMIN') {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 403 });
-    }
-
     const activity = await prisma.activity.findUnique({
-      where: { id: params.id },
+      where: {
+        id: params.id
+      },
       include: {
         type: true,
-      },
+      }
     });
+
+    if (!activity) {
+      return NextResponse.json(
+        { error: "Activité non trouvée" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json(activity);
   } catch (error) {
-    console.error('Erreur de récupération:', error);
+    console.error('Erreur:', error);
     return NextResponse.json(
       { error: "Erreur lors de la récupération de l'activité" },
       { status: 500 }
