@@ -17,9 +17,9 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-6">
-          <Link href="/activities" className="hover:text-primary transition-colors">
+          {/* <Link href="/activities" className="hover:text-primary transition-colors">
             Activités
-          </Link>
+          </Link> */}
 
           {session ? (
             <div className="flex items-center gap-4">
