@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Trash2, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { DialogEditActivity } from "@/components/activities/DialogEditActivity";
-
+import { DialogCreateActivity } from "@/components/activities/DialogCreateActivity";
 export default function ManageActivitiesPage() {
   const router = useRouter();
   const { data: session } = useSession();
@@ -59,13 +59,11 @@ export default function ManageActivitiesPage() {
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Gestion des activités</h1>
-        <button
-          onClick={() => router.push('/activities/manage/new')}
-          className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
-        >
-          <Plus size={20} />
-          Nouvelle activité
-        </button>
+        <DialogCreateActivity 
+          onSuccess={() => {
+            fetchActivities();
+          }}
+        />
       </div>
 
       <div className="bg-white rounded-lg shadow">
