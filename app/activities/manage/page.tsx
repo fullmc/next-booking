@@ -12,11 +12,11 @@ export default function ManageActivitiesPage() {
   interface Activity {
     id: string;
     name: string;
-    typeId?: string;
+    typeId: string | null;
     type: {
       id: string;
       name: string;
-    };
+    } | null;
     available_places: number;
     description: string;
     duration: number;

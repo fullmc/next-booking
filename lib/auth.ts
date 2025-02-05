@@ -34,18 +34,12 @@ export const authOptions: AuthOptions = {
           where: { email: credentials.email }
         });
 
-        if (!user) {
-          return null;
-        }
-
-        const isPasswordValid = await compare(credentials.password, user.password);
-
-        if (!isPasswordValid) {
+        if (!user || !(await compare(credentials.password, user.password))) {
           return null;
         }
 
         return {
-          id: user.id,
+          id: String(user.id),
           email: user.email,
           role: user.role,
         };

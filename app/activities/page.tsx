@@ -17,7 +17,10 @@ import {
 interface Activity {
   id: string;
   name: string;
-  type: string;
+  type: {
+    id: string;
+    name: string;
+  } | null;
   available_places: number;
   description: string;
   duration: number;
@@ -98,7 +101,7 @@ export default function ActivitiesPage() {
             </div>
             <CardHeader>
               <CardTitle>{activity.name}</CardTitle>
-              <CardDescription>{activity.type}</CardDescription>
+              <CardDescription>{activity.type?.name}</CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">{activity.description}</p>

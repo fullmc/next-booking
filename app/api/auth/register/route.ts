@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { first_name, last_name, email, password, role = 'USER' } = await req.json();
+    const { first_name, last_name, email, password } = await req.json();
     
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({
@@ -28,13 +28,14 @@ export async function POST(req: Request) {
         last_name,
         email,
         password: hashedPassword,
-        role,
+        role: 'USER',
       },
     });
 
     const { password: _, ...userWithoutPassword } = user;
     return NextResponse.json(userWithoutPassword);
   } catch (error) {
+    console.error('Erreur:', error);
     return NextResponse.json(
       { error: 'Erreur lors de l\'inscription' },
       { status: 500 }

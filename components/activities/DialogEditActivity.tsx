@@ -1,20 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Edit } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+interface ActivityType {
+  id: string;
+  name: string;
+}
 
 interface Activity {
   id: string;
   name: string;
-  typeId?: string;
   type: {
     id: string;
     name: string;
-  };
+  } | null;
+  typeId: string | null;
   available_places: number;
   description: string;
   duration: number;
@@ -30,9 +36,25 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     ...activity,
-    type: activity.type?.name || '',
+    typeId: activity.typeId || activity.type?.id || '',
   });
   const [loading, setLoading] = useState(false);
+  const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);
+
+  const fetchActivityTypes = async () => {
+    try {
+      const response = await fetch('/api/activity-types');
+      if (!response.ok) throw new Error('Erreur lors de la récupération des types');
+      const data = await response.json();
+      setActivityTypes(data);
+    } catch (error) {
+      console.error('Erreur:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchActivityTypes();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +65,7 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          typeId: activity.typeId,
+          typeId: formData.typeId,
         }),
       });
 
@@ -81,11 +103,22 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Type</label>
-            <Input
-              value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+            <Select
+              value={formData.typeId}
+              onValueChange={(value) => setFormData({ ...formData, typeId: value })}
               required
-            />
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez un type" />
+              </SelectTrigger>
+              <SelectContent>
+                {activityTypes.map((type) => (
+                  <SelectItem key={type.id} value={type.id}>
+                    {type.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">

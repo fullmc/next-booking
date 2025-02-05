@@ -6,6 +6,9 @@ import { getServerSession } from "next-auth";
 export async function GET() {
   try {
     const activities = await prisma.activity.findMany({
+      include: {
+        type: true,
+      },
       orderBy: { datetime_debut: 'desc' }
     });
     return NextResponse.json(activities);
