@@ -1,19 +1,54 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { ArrowLeft, Clock, MapPin, Euro } from "lucide-react"
 import Link from "next/link"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function ActivityDetailPage({ params }: { params: { id: string } }) {
-  // Simulons une activité (à remplacer par les vraies données)
-  const activity = {
-    id: params.id,
-    title: "Cours de Tennis",
-    description: "Apprenez le tennis avec des professionnels qualifiés. Nos cours sont adaptés à tous les niveaux, du débutant à l'avancé. Le matériel est fourni pour les débutants.",
-    price: 45,
-    duration: "1h30",
-    location: "Paris 15ème",
-    image: "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=1600&q=80",
-    instructor: "Jean Dupont",
-    maxParticipants: 6,
-    level: "Tous niveaux",
+interface Activity {
+  id: string;
+  name: string;
+  type: {
+    id: string;
+    name: string;
+  } | null;
+  available_places: number;
+  description: string;
+  duration: number;
+  datetime_debut: Date;
+}
+
+export default function ActivityDetailPage() {
+  const params = useParams();
+  const [activity, setActivity] = useState<Activity | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchActivity = async () => {
+      try {
+        const response = await fetch(`/api/activities/${params.id}`);
+        if (!response.ok) throw new Error('Erreur lors de la récupération');
+        const data = await response.json();
+        setActivity(data);
+      } catch (error) {
+        console.error('Erreur:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.id) {
+      fetchActivity();
+    }
+  }, [params.id]);
+
+  if (loading) {
+    return <div className="container mx-auto py-8 px-4">Chargement...</div>;
+  }
+
+  if (!activity) {
+    return <div className="container mx-auto py-8 px-4">Activité non trouvée</div>;
   }
 
   return (
@@ -22,53 +57,37 @@ export default function ActivityDetailPage({ params }: { params: { id: string } 
         <ArrowLeft size={20} />
         Retour aux activités
       </Link>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="rounded-xl overflow-hidden">
-          <img
-            src={activity.image}
-            alt={activity.title}
-            className="w-full h-[400px] object-cover"
-          />
-        </div>
-
-        <div className="space-y-6">
-          <h1 className="text-4xl font-bold">{activity.title}</h1>
-          
-          <div className="flex flex-wrap gap-4 text-gray-600">
-            <div className="flex items-center gap-2">
-              <Clock size={20} />
-              <span>{activity.duration}</span>
+      <Card className="max-w-3xl mx-auto">
+        <CardHeader>
+          <CardTitle className="text-3xl">{activity.name}</CardTitle>
+          <CardDescription>{activity.type?.name}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="aspect-video relative bg-gray-100 rounded-lg">
+            <img
+              alt={activity.name}
+              className="object-cover w-full h-full rounded-lg"
+            />
+          </div>
+          <p className="text-gray-700">{activity.description}</p>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span className="font-semibold">Date de début:</span>
+              <p>{new Date(activity.datetime_debut).toLocaleString()}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin size={20} />
-              <span>{activity.location}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Euro size={20} />
-              <span>{activity.price}€</span>
+            <div>
+              <span className="font-semibold">Durée:</span>
+              <p>{activity.duration} minutes</p>
             </div>
           </div>
-
-          <div className="prose max-w-none">
-            <h2 className="text-2xl font-semibold mb-2">Description</h2>
-            <p>{activity.description}</p>
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">Informations</h2>
-            <ul className="space-y-2">
-              <li>🎓 Instructeur : {activity.instructor}</li>
-              <li>👥 Nombre maximum de participants : {activity.maxParticipants}</li>
-              <li>📊 Niveau requis : {activity.level}</li>
-            </ul>
-          </div>
-
-          <button className="w-full md:w-auto bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors">
-            Réserver cette activité
+        </CardContent>
+        <CardFooter className="flex justify-between items-center">
+          <span className="text-xl font-bold">{activity.available_places} places disponibles</span>
+          <button className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition-colors">
+            Réserver
           </button>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
-  )
-} 
+  );
+}
