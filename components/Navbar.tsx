@@ -10,7 +10,7 @@ export function Navbar() {
   const { data: session } = useSession()
 
   return (
-    <nav className="border-b">
+    <nav className="border-b bg-black text-white">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="font-semibold text-lg">
           NextBooking
@@ -58,14 +58,14 @@ export function Navbar() {
             <div className="flex items-center gap-4">
               <Link
                 href="/login"
-                className="flex items-center gap-2 hover:text-primary transition-colors border border-primary rounded-md px-2 py-1"
+                className="flex items-center gap-2 hover:text-primary transition-colors border border-primary rounded-md px-2 py-1 border-white"
               >
                 <LogIn size={14} />
                 <span>Connexion</span>
               </Link>
               <Link
                 href="/register"
-                className="bg-primary text-white px-4 py-1 rounded-md hover:bg-primary/90 transition-colors"
+                className="bg-white text-black px-4 py-1 rounded-md hover:bg-primary/90 transition-colors"
               >
                 Inscription
               </Link>

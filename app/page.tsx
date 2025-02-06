@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import { FlipText } from '@/components/flip-text';
 import { RetroGrid } from '@/components/retro-grid';
 import { MagicCard } from '@/components/magic-card';
+import './layout.css';
 
 export default function Home() {
   const router = useRouter();
@@ -21,7 +22,11 @@ export default function Home() {
         className="container mx-auto px-4 py-20"
       >
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <FlipText word="Vivez l'Expérience ultime" className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500" />
+          <FlipText 
+            word="Vivez l'Expérience ultime" 
+            className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-200 via-zinc-300 to-gray-200 bg-clip-text text-transparent relative drop-shadow-[0_0_1.5rem_rgba(255,255,255,0.4)] filter backdrop-blur-sm"
+          />
+
           
           <motion.p 
             initial={{ y: 20, opacity: 0 }}
@@ -51,26 +56,22 @@ export default function Home() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="container mx-auto px-4 py-20"
       >
-        <div className="flex h-[500px] w-full flex-col gap-4 lg:h-[250px] lg:flex-row">
-          <MagicCard gradientColor="blue" className="flex-col items-center justify-center text-2xl px-6">
-            <h3 className="font-bold pb-6 text-black">Immersion Totale</h3>
-            <p className="text-xl text-gray-400 ">Des scénarios élaborés qui vous transportent dans un autre monde.</p>
+        <div className="flex h-[500px] w-full justify-center gap-4 lg:h-[250px] lg:flex-row">
+          <MagicCard gradientColor="white" className="flex-col items-center justify-center text-2xl px-6 max-w-sm  text-black">
+            <h3 className="font-medium pb-6 tracking-wide">Immersion totale</h3>
+            <p className="text-xl">Vivez des scénarios si réalistes que vous oublierez la frontière entre jeu et réalité. Saurez-vous tenir jusqu'au bout ?</p>
           </MagicCard>
-          <MagicCard className="flex-col items-center justify-center text-2xl px-6">
-            <h3 className="font-bold pb-6 text-black">Technologie Avancée</h3>
-            <p className="text-xl text-gray-400">Les dernières innovations au service de votre expérience.</p>
+          <MagicCard gradientColor="white" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
+            <h3 className="font-medium pb-6 tracking-wide">Technologie avancée</h3>
+            <p className="text-xl">Explorez des réalités cachées et percevez le monde sous un angle totalement nouveau. Prêts à voir l'invisible ?</p>
           </MagicCard>
-          <MagicCard className="flex-col items-center justify-center text-2xl px-6">
-            <h3 className="font-bold pb-6 text-black">Sécurité Garantie</h3>
-            <p className="text-xl text-gray-400">Une équipe d'experts veille à votre sécurité pendant toute l'expérience.</p>
+          <MagicCard gradientColor="white" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
+            <h3 className="font-medium pb-6 tracking-wide">Choisissez votre destin</h3>
+            <p className="text-xl">Du confortable au brutal : ajustez chaque expérience à votre seuil de tolérance... si vous en avez le courage.</p>
           </MagicCard>
         </div>
       </motion.div>
-
-      {/* Background Effect */}
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-black"></div>
     </div>
   );
 }
