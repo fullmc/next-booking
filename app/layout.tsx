@@ -7,6 +7,7 @@ import { Providers } from "@/components/Providers"
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,12 +29,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr">
-      <body>
-        <Providers>
-          <Navbar />
-          <main>{children}</main>
-        </Providers>
+    <html lang="fr" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <Providers>
+            <Navbar />
+            <main>{children}</main>
+          </Providers>
       </body>
     </html>
   )
