@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Plus } from 'lucide-react';
+import { Tag } from 'primereact/tag';
+import { Button } from 'primereact/button';
 import {
   Card,
   CardContent,
@@ -13,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
+import { tagSeverityMapper } from '@/lib/utils';
 interface Activity {
   id: string;
   name: string;
@@ -54,8 +56,20 @@ export default function ActivitiesPage() {
     fetchActivities();
   }, []);
 
+  // truncate description
+  const maxLength = 150;
+
+  const truncateDescription = (description: string) => {
+    if (description.length <= maxLength) return description;
+    return description.substring(0, maxLength) + '...';
+  };
+
   // Obtenir les types uniques d'activités
   const uniqueTypes = Array.from(new Set(activities.map(activity => activity.type?.name))).filter(Boolean) as string[];
+
+  const isFull = (activity: Activity) => {
+    return activity.available_places === 0;
+  };
 
   const filteredActivities = activities.filter(activity =>
     (selectedType ? activity.type?.name === selectedType : true) &&
@@ -133,22 +147,33 @@ export default function ActivitiesPage() {
                 src={activity.image}
               />
             </div>
+            <div className="flex flex-col justify-between">
             <CardHeader>
-              <CardTitle>{activity.name}</CardTitle>
-              <CardDescription>{activity.type?.name}</CardDescription>
+              <div className="flex justify-between items-center">
+              <CardTitle className="tracking-wide text-xl">{activity.name}</CardTitle>
+              <CardDescription className="text-sm">
+                <Tag 
+                  value={activity.type?.name} 
+                  severity={tagSeverityMapper(activity.type?.name)}
+                />
+              </CardDescription>
+              </div>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">{activity.description}</p>
-              <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
-                <span>⏱ {activity.duration} heures </span>
+              <p className="text-gray-600">{truncateDescription(activity.description)}</p>
+              <div className="mt-4 flex items-center gap-1 text-base text-gray-500 font-normal">
+                <span>⏱ {activity.duration}</span>
+                <span>{activity.duration > 1 ? 'heures' : 'heure'}</span>
               </div>
             </CardContent>
             <CardFooter className="flex justify-between items-center">
-              <span className="text-xl font-bold">{activity.available_places} places disponibles</span>
-              <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" onClick={() => router.push(`/activities/${activity.id}`)}>
-                Voir détails
-              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-bold">{activity.available_places}</span>
+                <span>{activity.available_places > 1 ? 'places disponibles' : activity.available_places === 1 ? 'place disponible' : 'COMPLET'}</span>
+              </div>
+              <Button label="Voir détails" disabled={isFull(activity)} onClick={() => router.push(`/activities/${activity.id}`)} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" />
             </CardFooter>
+            </div>
           </Card>
         ))}
       </div>

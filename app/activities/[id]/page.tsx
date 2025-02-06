@@ -2,24 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Clock, MapPin, Euro } from "lucide-react"
-import Link from "next/link"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { DialogMakeReservation } from '@/components/activities/DialogMakeReservation';
-
-interface Activity {
-  id: string;
-  name: string;
-  type: {
-    id: string;
-    name: string;
-  } | null;
-  available_places: number;
-  description: string;
-  duration: number;
-  datetime_debut: Date;
-  image: string;
-}
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { ActivityDetails } from '@/components/activities/ActivityDetails';
+import type { Activity } from '@/types/activity'; 
 
 export default function ActivityDetailPage() {
   const params = useParams();
@@ -45,13 +31,8 @@ export default function ActivityDetailPage() {
     }
   }, [params.id]);
 
-  if (loading) {
-    return <div className="container mx-auto py-8 px-4">Chargement...</div>;
-  }
-
-  if (!activity) {
-    return <div className="container mx-auto py-8 px-4">Activité non trouvée</div>;
-  }
+  if (loading) return <div className="container mx-auto py-8 px-4">Chargement...</div>;
+  if (!activity) return <div className="container mx-auto py-8 px-4">Activité non trouvée</div>;
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -59,39 +40,7 @@ export default function ActivityDetailPage() {
         <ArrowLeft size={20} />
         Retour aux activités
       </Link>
-      <Card className="max-w-3xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-3xl">{activity.name}</CardTitle>
-          <CardDescription>{activity.type?.name}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="aspect-video relative bg-gray-100 rounded-lg">
-            <img
-              alt={activity.name}
-              className="object-cover w-full h-full rounded-lg"
-              src={activity.image}
-            />
-          </div>
-          <p className="text-gray-700">{activity.description}</p>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <span className="font-semibold">Date de début:</span>
-              <p>{new Date(activity.datetime_debut).toLocaleString()}</p>
-            </div>
-            <div>
-              <span className="font-semibold">Durée:</span>
-              <p>{activity.duration} heures</p>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between items-center">
-          <span className="text-xl font-bold">{activity.available_places} places disponibles</span>
-          <DialogMakeReservation 
-            activityId={activity.id} 
-            activityName={activity.name}
-          />
-        </CardFooter>
-      </Card>
+      <ActivityDetails activity={activity} />
     </div>
   );
 }
