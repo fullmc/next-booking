@@ -7,25 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-interface ActivityType {
-  id: string;
-  name: string;
-}
-
-interface Activity {
-  id: string;
-  name: string;
-  type: {
-    id: string;
-    name: string;
-  } | null;
-  typeId: string | null;
-  available_places: number;
-  description: string;
-  duration: number;
-  datetime_debut: Date;
-}
+import { Activity } from '@/types/activity';
 
 interface DialogEditActivityProps {
   activity: Activity;
@@ -36,7 +18,7 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     ...activity,
-    typeId: activity.typeId || activity.type?.id || '',
+    typeId: activity.type?.id || '',
   });
   const [loading, setLoading] = useState(false);
   const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);

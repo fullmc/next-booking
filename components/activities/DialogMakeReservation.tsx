@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"
+import { Message } from 'primereact/message';
+import Link from 'next/link';
 import {
   Dialog,
   DialogContent,
@@ -16,18 +19,29 @@ import {
 interface DialogMakeReservationProps {
   activityId: string;
   activityName?: string;
+  activityType?: string;
   onSuccess?: () => void;
 }
 
 export function DialogMakeReservation({ 
   activityId, 
   activityName, 
+  activityType,
   onSuccess 
 }: DialogMakeReservationProps) {
   const [loading, setLoading] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const { data: session } = useSession();
   const { toast } = useToast();
   const router = useRouter();
+
+  const handleClick = () => {
+    if (!session) {
+      setShowConfirmDialog(true);
+      return;
+    }
+    setShowConfirmDialog(true);
+  };
 
   const handleReserve = async () => {
     setLoading(true);
@@ -65,34 +79,67 @@ export function DialogMakeReservation({
   return (
     <>
       <Button 
-        onClick={() => setShowConfirmDialog(true)} 
+        onClick={handleClick}
         disabled={loading}
       >
         Réserver
       </Button>
 
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirmer la réservation</DialogTitle>
-            <DialogDescription>
-              Voulez-vous confirmer la réservation {activityName ? `pour "${activityName}"` : "de cette activité"} ?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="gap-2 sm:gap-0">
-            <Button
-              variant="outline"
-              onClick={() => setShowConfirmDialog(false)}
-            >
-              Annuler
-            </Button>
-            <Button
-              onClick={handleReserve}
-              disabled={loading}
-            >
-              {loading ? 'Réservation en cours...' : 'Confirmer'}
-            </Button>
-          </DialogFooter>
+        <DialogContent className="w-full max-w-md">
+          {!session ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl font-bold">Connexion requise</DialogTitle>
+                <DialogDescription className="text-base font-normal">
+                  Vous devez être connecté pour effectuer une réservation.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="flex-col gap-2 sm:flex-row">
+                <Link href="/login" className="w-full sm:w-auto">
+                  <Button className="w-full" onClick={() => setShowConfirmDialog(false)}>
+                    Se connecter
+                  </Button>
+                </Link>
+                <Link href="/register" className="w-full sm:w-auto">
+                  <Button variant="outline" className="w-full" onClick={() => setShowConfirmDialog(false)}>
+                    Créer un compte
+                  </Button>
+                </Link>
+              </DialogFooter>
+            </>
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl font-bold">Confirmer la réservation</DialogTitle>
+                {activityType === 'Survival' && (
+                  <Message 
+                    severity="warn" 
+                    text="Attention, pour public averti de 18 ans et plus." 
+                    style={{ 
+                      fontSize: '12px',
+                      textAlign: 'left',
+                      display: 'flex',
+                      marginTop: '8px',
+                      alignItems: 'center',
+                      justifyContent: 'left',
+                    }}
+                  />
+                )}
+                <DialogDescription className="text-base font-normal">
+                  Voulez-vous confirmer la réservation {activityName ? `pour "${activityName}"` : "de cette activité"} ?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="gap-2 sm:gap-0">
+                <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
+                  Annuler
+                </Button>
+                <Button onClick={handleReserve} disabled={loading}>
+                  {loading ? 'Réservation en cours...' : 'Confirmer'}
+                </Button>
+              </DialogFooter>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </>

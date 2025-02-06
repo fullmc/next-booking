@@ -66,6 +66,7 @@ export function ActivityDetails({ activity }: ActivityDetailsProps) {
         <DialogMakeReservation 
           activityId={activity.id} 
           activityName={activity.name}
+          activityType={activity.type?.name}  
         />
       </CardFooter>
     </Card>

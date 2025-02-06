@@ -167,7 +167,7 @@ export default function ActivitiesPage() {
               </div>
             </CardContent>
             <CardFooter className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
+              <div className="flex items-baseline gap-2">
                 <span className="text-xl font-bold">{activity.available_places}</span>
                 <span>{activity.available_places > 1 ? 'places disponibles' : activity.available_places === 1 ? 'place disponible' : 'COMPLET'}</span>
               </div>
