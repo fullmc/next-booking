@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Button } from "@/components/ui/button";
+import { ShadcnButton } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"
 import { Message } from 'primereact/message';
 import Link from 'next/link';
@@ -20,6 +20,7 @@ interface DialogMakeReservationProps {
   activityId: string;
   activityName?: string;
   activityType?: string;
+  available_places: number;
   onSuccess?: () => void;
 }
 
@@ -27,6 +28,7 @@ export function DialogMakeReservation({
   activityId, 
   activityName, 
   activityType,
+  available_places,
   onSuccess 
 }: DialogMakeReservationProps) {
   const [loading, setLoading] = useState(false);
@@ -78,12 +80,12 @@ export function DialogMakeReservation({
 
   return (
     <>
-      <Button 
+      <ShadcnButton 
         onClick={handleClick}
-        disabled={loading}
+        disabled={loading || available_places === 0}
       >
         Réserver
-      </Button>
+      </ShadcnButton>
 
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent className="w-full max-w-md">
@@ -97,14 +99,14 @@ export function DialogMakeReservation({
               </DialogHeader>
               <DialogFooter className="flex-col gap-2 sm:flex-row">
                 <Link href="/login" className="w-full sm:w-auto">
-                  <Button className="w-full" onClick={() => setShowConfirmDialog(false)}>
+                  <ShadcnButton className="w-full" onClick={() => setShowConfirmDialog(false)}>
                     Se connecter
-                  </Button>
+                  </ShadcnButton>
                 </Link>
                 <Link href="/register" className="w-full sm:w-auto">
-                  <Button variant="outline" className="w-full" onClick={() => setShowConfirmDialog(false)}>
+                  <ShadcnButton variant="outline" className="w-full" onClick={() => setShowConfirmDialog(false)}>
                     Créer un compte
-                  </Button>
+                  </ShadcnButton>
                 </Link>
               </DialogFooter>
             </>
@@ -131,12 +133,12 @@ export function DialogMakeReservation({
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter className="gap-2 sm:gap-0">
-                <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>
+                <ShadcnButton variant="outline" onClick={() => setShowConfirmDialog(false)}>
                   Annuler
-                </Button>
-                <Button onClick={handleReserve} disabled={loading}>
+                </ShadcnButton>
+                <ShadcnButton onClick={handleReserve} disabled={loading}>
                   {loading ? 'Réservation en cours...' : 'Confirmer'}
-                </Button>
+                </ShadcnButton>
               </DialogFooter>
             </>
           )}

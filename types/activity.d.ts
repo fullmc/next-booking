@@ -10,6 +10,7 @@ declare global {
     description: string;
     duration: number;
     datetime_debut: Date;
+    reservations: Reservation[];
     image: string;
   }
 
@@ -19,4 +20,4 @@ declare global {
   }
   
 }
- export {Activity}
+ export { Activity }

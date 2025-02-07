@@ -28,10 +28,10 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {error && <div className="text-red-500">{error}</div>}
 
-      <div>
+      <div className="flex flex-col gap-1">
         <label htmlFor="email">Email</label>
         <input
           type="email"
@@ -42,7 +42,7 @@ export default function LoginForm() {
         />
       </div>
 
-      <div>
+      <div className="flex flex-col gap-1">
         <label htmlFor="password">Mot de passe</label>
         <input
           type="password"
@@ -55,7 +55,7 @@ export default function LoginForm() {
 
       <Button
         type="submit"
-        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        className="w-fit text-white px-6 rounded"
       >
         Se connecter
       </Button>

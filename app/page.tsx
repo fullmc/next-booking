@@ -76,8 +76,8 @@ export default function Home() {
             </motion.p>
           </MagicCard>
           <MagicCard gradientColor="#8B0000" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
-            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-red-500">Choisissez votre destin</h3>
-            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Du confortable au brutal : ajustez chaque expérience à votre seuil de tolérance... si vous en avez le courage.</p>
+            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-red-500">Plongez dans l'abîme</h3>
+            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Du refuge apaisant à l’horreur pure : repoussez vos limites, jusqu'à ce que le courage devienne une question de survie ...</p>
           </MagicCard>
         </div>
       </motion.div>

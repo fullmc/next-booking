@@ -5,7 +5,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Edit } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Button } from 'primereact/button';
+import { ShadcnButton } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Activity } from '@/types/activity';
 
@@ -65,9 +66,12 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <button className="text-blue-600 hover:text-blue-800">
-          <Edit size={20} />
-        </button>
+        <Button 
+          icon="pi pi-pencil" 
+          text 
+          className="text-sky-600 hover:text-sky-800" 
+          aria-label="Edit" 
+        />
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
@@ -80,6 +84,8 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
+              maxLength={36}
+              placeholder="36 caractères max."
             />
           </div>
 
@@ -125,7 +131,7 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Durée (en minutes)</label>
+            <label className="text-sm font-medium">Durée (en heures)</label>
             <Input
               type="number"
               value={formData.duration}
@@ -145,17 +151,22 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
             />
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Image</label>
+            <Input type="text" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
+          </div>
+
           <div className="flex gap-3 justify-end pt-4">
-            <Button
+            <ShadcnButton
               type="button"
               variant="outline"
               onClick={() => setIsOpen(false)}
             >
               Annuler
-            </Button>
-            <Button type="submit" disabled={loading}>
+            </ShadcnButton>
+            <ShadcnButton type="submit" disabled={loading}>
               {loading ? 'Mise à jour...' : 'Enregistrer'}
-            </Button>
+            </ShadcnButton>
           </div>
         </form>
       </SheetContent>

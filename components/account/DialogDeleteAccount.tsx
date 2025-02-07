@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
-import { Button } from "@/components/ui/button";
+import { ShadcnButton } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -50,29 +50,28 @@ export function DialogDeleteAccount() {
   return (
     <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
       <DialogTrigger asChild>
-        <Button variant="destructive">Supprimer le compte</Button>
+        <ShadcnButton variant="destructive">Supprimer le compte</ShadcnButton>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Supprimer le compte</DialogTitle>
+          <DialogTitle className="mb-4">Supprimer le compte</DialogTitle>
           <DialogDescription>
             Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2 sm:gap-0">
-          <Button
+          <ShadcnButton
             variant="outline"
             onClick={() => setShowConfirmDialog(false)}
           >
             Annuler
-          </Button>
-          <Button
-            variant="destructive"
+          </ShadcnButton>
+          <ShadcnButton
             onClick={handleDelete}
             disabled={loading}
           >
             {loading ? 'Suppression...' : 'Confirmer'}
-          </Button>
+          </ShadcnButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

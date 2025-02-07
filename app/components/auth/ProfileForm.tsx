@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
+import { ShadcnButton } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
@@ -50,8 +50,8 @@ export default function ProfileForm({ user }: { user: any }) {
       {error && <div className="text-red-500">{error}</div>}
       {message && <div className="text-green-500">{message}</div>}
 
-      <div className="space-y-4">
-        <div>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <Label>Prénom</Label>
           <Input
             type="text"
@@ -61,7 +61,7 @@ export default function ProfileForm({ user }: { user: any }) {
           />
         </div>
 
-        <div>
+        <div className="flex flex-col gap-3">
           <Label>Nom</Label>
           <Input
             type="text"
@@ -71,7 +71,7 @@ export default function ProfileForm({ user }: { user: any }) {
           />
         </div>
 
-        <div>
+        <div className="flex flex-col gap-3">
           <Label>Email</Label>
           <Input
             type="email"
@@ -81,22 +81,22 @@ export default function ProfileForm({ user }: { user: any }) {
           />
         </div>
 
-        <div>
+        <div className="flex items-center gap-3">
           <Label>Rôle</Label>
           <Badge variant="outline" className="w-fit">{user.role.toLowerCase()}</Badge>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-4">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button>Modifier</Button>
+              <ShadcnButton>Modifier</ShadcnButton>
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
                 <SheetTitle>Modifier le profil</SheetTitle>
               </SheetHeader>
               <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                <div>
+                <div className="flex flex-col gap-3">
                   <Label htmlFor="first_name">Prénom</Label>
                   <Input
                     id="first_name"
@@ -105,7 +105,7 @@ export default function ProfileForm({ user }: { user: any }) {
                   />
                 </div>
 
-                <div>
+                <div className="flex flex-col gap-3">
                   <Label htmlFor="last_name">Nom</Label>
                   <Input
                     id="last_name"
@@ -114,7 +114,7 @@ export default function ProfileForm({ user }: { user: any }) {
                   />
                 </div>
 
-                <div>
+                <div className="flex flex-col gap-3">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
@@ -124,18 +124,10 @@ export default function ProfileForm({ user }: { user: any }) {
                   />
                 </div>
 
-                <Button type="submit">Enregistrer</Button>
+                <ShadcnButton type="submit">Enregistrer</ShadcnButton>
               </form>
             </SheetContent>
-          </Sheet>
-
-          <Button
-            type="button"
-            onClick={() => signOut({ callbackUrl: '/' })}
-            variant="outline"
-          >
-            Se déconnecter
-          </Button>
+          </Sheet>  
 
           <DialogDeleteAccount />
         </div>

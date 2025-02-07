@@ -1,4 +1,3 @@
-// TODO: Dialog pour créer une activité
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -12,8 +11,10 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { ShadcnButton } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ListPlus } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 interface ActivityType {
   id: string;
@@ -25,6 +26,7 @@ interface DialogCreateActivityProps {
 }
 
 export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);
@@ -34,7 +36,8 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
     available_places: 0,
     description: '',
     duration: 0,
-    datetime_debut: new Date().toISOString().slice(0, 16)
+    datetime_debut: new Date().toISOString().slice(0, 16),
+    image: ''
   });
 
   const fetchActivityTypes = async () => {
@@ -64,6 +67,7 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
 
       if (!response.ok) throw new Error('Erreur lors de la création');
       
+      const newActivity = await response.json();
       onSuccess();
       setIsOpen(false);
       setFormData({
@@ -72,8 +76,12 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
         available_places: 0,
         description: '',
         duration: 0,
-        datetime_debut: new Date().toISOString().slice(0, 16)
+        datetime_debut: new Date().toISOString().slice(0, 16),
+        image: ''
       });
+      
+      // Redirection vers la page de l'activité
+      router.push(`/activities/${newActivity.id}`);
     } catch (error) {
       console.error('Erreur:', error);
     } finally {
@@ -84,7 +92,10 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Nouvelle activité</Button>
+        <ShadcnButton className="flex items-center gap-2">
+          <ListPlus size={20} />
+          Nouvelle activité
+        </ShadcnButton>
       </DialogTrigger>
       <DialogContent className="w-[400px] sm:w-[540px]">
         <DialogHeader>
@@ -97,6 +108,8 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
+              maxLength={36}
+              placeholder="36 caractères max."
             />
           </div>
 
@@ -142,7 +155,7 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Durée (en minutes)</label>
+            <label className="text-sm font-medium">Durée (en heures)</label>
             <Input
               type="number"
               value={formData.duration}
@@ -162,17 +175,22 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
             />
           </div>
 
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Image</label>
+            <Input type="text" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
+          </div>
+
           <div className="flex gap-3 justify-end pt-4">
-            <Button
+            <ShadcnButton
               type="button"
               variant="outline"
               onClick={() => setIsOpen(false)}
             >
               Annuler
-            </Button>
-            <Button type="submit" disabled={loading}>
+            </ShadcnButton>
+            <ShadcnButton type="submit" disabled={loading}>
               {loading ? 'Création...' : 'Créer'}
-            </Button>
+            </ShadcnButton>
           </div>
         </form>
       </DialogContent>

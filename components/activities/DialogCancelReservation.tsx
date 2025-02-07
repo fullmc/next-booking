@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button";
+import { ShadcnButton } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -67,12 +67,12 @@ export function DialogCancelReservation({
 
   return (
     <>
-      <Button 
+      <ShadcnButton 
         onClick={() => setShowConfirmDialog(true)} 
         disabled={loading}
       >
         Annuler
-      </Button>
+      </ShadcnButton>
 
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
@@ -83,18 +83,18 @@ export function DialogCancelReservation({
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-0">
-            <Button
+            <ShadcnButton
               variant="outline"
               onClick={() => setShowConfirmDialog(false)}
             >
               Annuler
-            </Button>
-            <Button
+            </ShadcnButton>
+            <ShadcnButton
               onClick={handleCancel}
               disabled={loading}
             >
               {loading ? 'Annulation en cours...' : 'Confirmer'}
-            </Button>
+            </ShadcnButton>
           </DialogFooter>
         </DialogContent>
       </Dialog>

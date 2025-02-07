@@ -13,18 +13,13 @@ interface ActivityDetailsProps {
 }
 
 export function ActivityDetails({ activity }: ActivityDetailsProps) {
-  const getAvailabilityText = (places: number) => {
-    if (places > 1) return 'places disponibles';
-    if (places === 1) return 'place disponible';
-    return 'COMPLET';
-  };
 
   return (
     <Card className="max-w-3xl mx-auto">
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <CardTitle className="text-3xl">{activity.name}</CardTitle>
+            <CardTitle className="text-3xl tracking-wide">{activity.name}</CardTitle>
             <Tag 
               severity={tagSeverityMapper(activity.type?.name)} 
               value={activity.type?.name} 
@@ -32,9 +27,15 @@ export function ActivityDetails({ activity }: ActivityDetailsProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-lg">
-          <span className="font-bold">{activity.available_places}</span>
-          <span>{getAvailabilityText(activity.available_places)}</span>
+        <div className="flex items-baseline gap-2">
+          {activity.available_places === 0 ? (
+            <span className="text-xl font-bold text-red-600">COMPLET</span>
+          ) : (
+            <>
+              <span className="text-xl font-bold">{activity.available_places}</span>
+              <span>{activity.available_places > 1 ? 'places disponibles' : 'place disponible'}</span>
+            </>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -66,7 +67,8 @@ export function ActivityDetails({ activity }: ActivityDetailsProps) {
         <DialogMakeReservation 
           activityId={activity.id} 
           activityName={activity.name}
-          activityType={activity.type?.name}  
+          activityType={activity.type?.name}
+          available_places={activity.available_places}
         />
       </CardFooter>
     </Card>

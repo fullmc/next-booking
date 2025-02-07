@@ -104,10 +104,10 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {error && <div className="text-red-500">{error}</div>}
       
-      <div>
+      <div className="flex flex-col gap-3">
         <Label htmlFor="first_name">Prénom</Label>
         <Input
           type="text"
@@ -122,7 +122,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      <div>
+      <div className="flex flex-col gap-3">
         <Label htmlFor="last_name">Nom</Label>
         <Input
           type="text"
@@ -137,7 +137,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      <div>
+      <div className="flex flex-col gap-3">
         <Label htmlFor="email">Email</Label>
         <Input
           type="email"
@@ -152,7 +152,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      <div>
+      <div className="flex flex-col gap-3">
         <Label htmlFor="password">Mot de passe</Label>
         <Input
           type="password"
@@ -169,7 +169,7 @@ export default function RegisterForm() {
 
       <Button
         type="submit"
-        className="w-full"
+        className="w-fit"
         disabled={!isFormValid}
       >
         S'inscrire

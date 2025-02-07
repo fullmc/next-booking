@@ -4,9 +4,10 @@ import { Search } from "lucide-react"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Plus } from 'lucide-react';
+import { List } from 'lucide-react';
 import { Tag } from 'primereact/tag';
 import { Button } from 'primereact/button';
+import { ShineBorder } from "@/components/magicui/shine-border";
 import {
   Card,
   CardContent,
@@ -49,7 +50,7 @@ export default function ActivitiesPage() {
       } catch (error) {
         console.error('Erreur:', error);
       } finally {
-        setLoading(false);
+        setLoading(true);
       }
     };
 
@@ -67,9 +68,6 @@ export default function ActivitiesPage() {
   // Obtenir les types uniques d'activités
   const uniqueTypes = Array.from(new Set(activities.map(activity => activity.type?.name))).filter(Boolean) as string[];
 
-  const isFull = (activity: Activity) => {
-    return activity.available_places === 0;
-  };
 
   const filteredActivities = activities.filter(activity =>
     (selectedType ? activity.type?.name === selectedType : true) &&
@@ -77,28 +75,24 @@ export default function ActivitiesPage() {
     activity.description.toLowerCase().includes(search.toLowerCase()))
   );
 
-  if (loading) {
-    return <div className="container mx-auto py-8 px-4">Chargement...</div>;
-  }
-
   return (
     <div className="container mx-auto py-8 px-4">
       {/* En-tête et Recherche */}
-      <div className="mb-8 space-y-4">
+      <div className="mb-12 space-y-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold">Découvrez nos activités</h1>
+          <h1 className="text-4xl font-bold mb-4">Découvrez nos activités</h1>
           {isAdmin && (
-            <button
+            <Button
               onClick={() => router.push('/activities/manage')}
               className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
             >
-              <Plus size={20} />
+              <List size={20} />
               Gérer les activités
-            </button>
+            </Button>
           )}
         </div>
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"  />
           <input
             type="text"
             placeholder="Rechercher une activité..."
@@ -118,7 +112,7 @@ export default function ActivitiesPage() {
                 : 'bg-gray-100 hover:bg-gray-200'
             }`}
           >
-            Tout
+            Tout ({activities.length})
           </button>
           {uniqueTypes.map((type) => (
             <button
@@ -130,7 +124,7 @@ export default function ActivitiesPage() {
                   : 'bg-gray-100 hover:bg-gray-200'
               }`}
             >
-              {type}
+              {type} ({activities.filter(activity => activity.type?.name === type).length})
             </button>
           ))}
         </div>
@@ -139,42 +133,50 @@ export default function ActivitiesPage() {
       {/* Grille d'activités */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredActivities.map((activity) => (
-          <Card key={activity.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="aspect-video relative">
-              <img
-                alt={activity.name}
-                className="object-cover w-full h-full"
-                src={activity.image}
-              />
-            </div>
-            <div className="flex flex-col justify-between">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-              <CardTitle className="tracking-wide text-xl">{activity.name}</CardTitle>
-              <CardDescription className="text-sm">
-                <Tag 
-                  value={activity.type?.name} 
-                  severity={tagSeverityMapper(activity.type?.name)}
+          <ShineBorder key={activity.id}>
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="aspect-video relative">
+                <img
+                  alt={activity.name}
+                  className="object-cover w-full h-full"
+                  src={activity.image}
                 />
-              </CardDescription>
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">{truncateDescription(activity.description)}</p>
-              <div className="mt-4 flex items-center gap-1 text-base text-gray-500 font-normal">
-                <span>⏱ {activity.duration}</span>
-                <span>{activity.duration > 1 ? 'heures' : 'heure'}</span>
+              <div className="flex flex-col justify-between">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                <CardTitle className="tracking-wide text-lg">{activity.name}</CardTitle>
+                <CardDescription className="text-sm">
+                  <Tag 
+                    value={activity.type?.name} 
+                    severity={tagSeverityMapper(activity.type?.name)}
+                  />
+                </CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">{truncateDescription(activity.description)}</p>
+                <div className="mt-4 flex items-center gap-1 text-base text-gray-500 font-normal">
+                  <span>⏱ {activity.duration}</span>
+                  <span>{activity.duration > 1 ? 'heures' : 'heure'}</span>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between items-center">
+                <div className="flex items-baseline gap-2">
+                  {activity.available_places === 0 ? (
+                    <span className="text-xl font-bold">COMPLET</span>
+                  ) : (
+                    <>
+                      <span className="text-xl font-bold">{activity.available_places}</span>
+                      <span>{activity.available_places > 1 ? 'places disponibles' : 'place disponible'}</span>
+                    </>
+                  )}
+                </div>
+                <Button label="Voir détails" onClick={() => router.push(`/activities/${activity.id}`)} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" />
+              </CardFooter>
               </div>
-            </CardContent>
-            <CardFooter className="flex justify-between items-center">
-              <div className="flex items-baseline gap-2">
-                <span className="text-xl font-bold">{activity.available_places}</span>
-                <span>{activity.available_places > 1 ? 'places disponibles' : activity.available_places === 1 ? 'place disponible' : 'COMPLET'}</span>
-              </div>
-              <Button label="Voir détails" disabled={isFull(activity)} onClick={() => router.push(`/activities/${activity.id}`)} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" />
-            </CardFooter>
-            </div>
-          </Card>
+            </Card>
+          </ShineBorder>
         ))}
       </div>
     </div>

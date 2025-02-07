@@ -2,27 +2,19 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Trash2, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { DialogEditActivity } from "@/components/activities/DialogEditActivity";
 import { DialogCreateActivity } from "@/components/activities/DialogCreateActivity";
+import { Reservation } from '@/types/reservations';
+import { DialogDeleteActivity } from "@/components/activities/DialogDeleteActivity";
+
 export default function ManageActivitiesPage() {
   const router = useRouter();
   const { data: session } = useSession();
-  interface Activity {
-    id: string;
-    name: string;
-    typeId: string | null;
-    type: {
-      id: string;
-      name: string;
-    } | null;
-    available_places: number;
-    description: string;
-    duration: number;
-    datetime_debut: Date;
-  }
+
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [loading, setLoading] = useState(true);
   
   const fetchActivities = async () => {
     const response = await fetch('/api/activities');
@@ -30,8 +22,22 @@ export default function ManageActivitiesPage() {
     setActivities(data);
   };
 
+  const fetchReservations = async () => {
+    try {
+      const response = await fetch('/api/reservations');
+      if (!response.ok) throw new Error('Erreur lors de la récupération des réservations');
+      const data = await response.json();
+      setReservations(data);
+    } catch (error) {
+      console.error('Erreur:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchActivities();
+    fetchReservations();
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -80,23 +86,25 @@ export default function ManageActivitiesPage() {
             {activities.map((activity) => (
               <tr key={activity.id}>
                 <td className="px-6 py-4">{activity.name}</td>
-                <td className="px-6 py-4">{activity.available_places}</td>
-                <td className="px-6 py-4">{activity.duration}</td>
                 <td className="px-6 py-4">
+                  {activity.available_places - (reservations.filter(res => 
+                    res.activity_id === activity.id && res.status 
+                  ).length)} / {activity.available_places}
+                </td>
+                <td className="px-6 py-4">{activity.duration > 1 ? `${activity.duration} heures` : `${activity.duration} heure`}</td>
+                <td className="">
                   <div className="flex gap-2">
                     <DialogEditActivity 
                       activity={activity}
                       onUpdate={() => {
-                        // Rafraîchir la liste des activités
                         fetchActivities();
                       }}
                     />
-                    <button
-                      onClick={() => handleDelete(activity.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <Trash2 size={20} />
-                    </button>
+                    <DialogDeleteActivity
+                      activityId={activity.id}
+                      activityName={activity.name}
+                      onDelete={handleDelete}
+                    />
                   </div>
                 </td>
               </tr>
