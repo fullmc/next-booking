@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { FlipText } from '@/components/flip-text';
-import { RetroGrid } from '@/components/retro-grid';
+// import { RetroGrid } from '@/components/retro-grid';
+import { Ripple } from '@/components/ripple';
 import { MagicCard } from '@/components/magic-card';
 import './layout.css';
 
@@ -14,7 +15,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <RetroGrid lightLineColor="white" cellSize={200}/>
+      {/* <RetroGrid lightLineColor="white" cellSize={200}/> */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -52,26 +53,34 @@ export default function Home() {
       </motion.div>
 
       {/* Features Section */}
+      <Ripple mainCircleSize={300} mainCircleOpacity={0.5} numCircles={10}/>
       <motion.div 
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
         <div className="flex h-[500px] w-full justify-center gap-4 lg:h-[250px] lg:flex-row">
-          <MagicCard gradientColor="white" className="flex-col items-center justify-center text-2xl px-6 max-w-sm  text-black">
-            <h3 className="font-medium pb-6 tracking-wide">Immersion totale</h3>
-            <p className="text-xl">Vivez des scénarios si réalistes que vous oublierez la frontière entre jeu et réalité. Saurez-vous tenir jusqu'au bout ?</p>
+          <MagicCard gradientColor="#0A1F4E" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
+            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-blue-500">Immersion totale</h3>
+            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Vivez des scénarios si réalistes que vous oublierez la frontière entre jeu et réalité. Saurez-vous tenir jusqu'au bout ?</p>
           </MagicCard>
-          <MagicCard gradientColor="white" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
-            <h3 className="font-medium pb-6 tracking-wide">Technologie avancée</h3>
-            <p className="text-xl">Explorez des réalités cachées et percevez le monde sous un angle totalement nouveau. Prêts à voir l'invisible ?</p>
+          <MagicCard gradientColor="#C0C0C0" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
+            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-neutral-950">Technologie avancée</h3>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-xl transition-colors duration-500 group-hover:text-neutral-300"
+            >
+              Explorez des réalités cachées et percevez le monde sous un angle totalement nouveau. Prêts à voir l'invisible ?
+            </motion.p>
           </MagicCard>
-          <MagicCard gradientColor="white" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
-            <h3 className="font-medium pb-6 tracking-wide">Choisissez votre destin</h3>
-            <p className="text-xl">Du confortable au brutal : ajustez chaque expérience à votre seuil de tolérance... si vous en avez le courage.</p>
+          <MagicCard gradientColor="#8B0000" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
+            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-red-500">Choisissez votre destin</h3>
+            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Du confortable au brutal : ajustez chaque expérience à votre seuil de tolérance... si vous en avez le courage.</p>
           </MagicCard>
         </div>
       </motion.div>
     </div>
-  );
+  );           
 }
