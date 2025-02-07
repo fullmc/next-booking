@@ -5,17 +5,57 @@ import { DialogMakeReservation } from '@/components/activities/DialogMakeReserva
 import { tagSeverityMapper } from '@/lib/utils';
 import { Tag } from 'primereact/tag';
 import { formatDate, formatTime, formatDuration } from '@/lib/formatters';
-import { Activity } from '@/types/activity';
-
-
+import { Activity } from '@/types/activity'
+import { NeonGradientCard } from '@/components/magicui/neon-gradient-card';
 interface ActivityDetailsProps {
   activity: Activity;
 }
 
 export function ActivityDetails({ activity }: ActivityDetailsProps) {
+  const getGradientColors = (type: string | undefined) => {
+    console.log('Type reçu:', type); // Debug
+
+    switch (type) {
+      case 'Survival':
+        return {
+          firstColor: '#ff0000',
+          secondColor: '#7f0000'
+        };
+      case 'Soft':
+        return {
+          firstColor: '#a7f3d0',
+          secondColor: '#dbeafe'
+        };
+      case 'Hardcore':
+        return {
+          firstColor: '#ff8c00',
+          secondColor: '#ff4500'
+        };
+      case 'Réaliste':
+        return {
+          firstColor: '#93c5fd',
+          secondColor: '#fcd34d'
+        };
+      default:
+        console.log('Type non reconnu, utilisation des couleurs par défaut');
+        return {
+          firstColor: '#93c5fd',
+          secondColor: '#fcd34d'
+        };
+    }
+  };
+
+  const gradientColors = getGradientColors(activity.type?.name);
+
+  console.log('Type:', activity.type?.name); // Pour déboguer
+  console.log('Gradient Colors:', gradientColors); // Pour déboguer
 
   return (
-    <Card className="max-w-3xl mx-auto">
+    <NeonGradientCard 
+      className="max-w-3xl mx-auto"
+      neonColors={gradientColors}
+      blur="80px"
+    >
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -71,6 +111,6 @@ export function ActivityDetails({ activity }: ActivityDetailsProps) {
           available_places={activity.available_places}
         />
       </CardFooter>
-    </Card>
+    </NeonGradientCard>
   );
 } 

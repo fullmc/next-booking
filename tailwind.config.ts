@@ -59,7 +59,9 @@ export default {
   		animation: {
   			grid: 'grid 15s linear infinite',
   			ripple: 'ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite',
-  			shine: 'shine var(--duration) infinite linear'
+  			shine: 'shine var(--duration) infinite linear',
+  			pulse: 'pulse var(--duration) ease-out infinite',
+  			'background-position-spin': 'background-position-spin 3000ms infinite alternate'
   		},
   		keyframes: {
   			grid: {
@@ -87,6 +89,22 @@ export default {
   				},
   				to: {
   					'background-position': '0% 0%'
+  				}
+  			},
+  			pulse: {
+  				'0%, 100%': {
+  					boxShadow: '0 0 0 0 var(--pulse-color)'
+  				},
+  				'50%': {
+  					boxShadow: '0 0 0 8px var(--pulse-color)'
+  				}
+  			},
+  			'background-position-spin': {
+  				'0%': {
+  					backgroundPosition: 'top center'
+  				},
+  				'100%': {
+  					backgroundPosition: 'bottom center'
   				}
   			}
   		}

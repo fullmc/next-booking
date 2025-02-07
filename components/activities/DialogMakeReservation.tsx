@@ -7,6 +7,7 @@ import { ShadcnButton } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast"
 import { Message } from 'primereact/message';
 import Link from 'next/link';
+import { PulsatingButton } from '@/components/magicui/pulsating-button';
 import {
   Dialog,
   DialogContent,
@@ -80,12 +81,13 @@ export function DialogMakeReservation({
 
   return (
     <>
-      <ShadcnButton 
+      <PulsatingButton
         onClick={handleClick}
         disabled={loading || available_places === 0}
+        pulseColor="#6366F1"
       >
         Réserver
-      </ShadcnButton>
+      </PulsatingButton>
 
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent className="w-full max-w-md">

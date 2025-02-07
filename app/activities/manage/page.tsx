@@ -7,6 +7,8 @@ import { DialogEditActivity } from "@/components/activities/DialogEditActivity";
 import { DialogCreateActivity } from "@/components/activities/DialogCreateActivity";
 import { Reservation } from '@/types/reservations';
 import { DialogDeleteActivity } from "@/components/activities/DialogDeleteActivity";
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export default function ManageActivitiesPage() {
   const router = useRouter();
@@ -68,6 +70,10 @@ export default function ManageActivitiesPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-8">
+        <Link href="/activities" className="flex gap-2 items-center text-primary hover:underline">
+          <ArrowLeft size={20} />
+          Retour aux activités
+        </Link>
         <h1 className="text-3xl font-bold">Gestion des activités</h1>
         <DialogCreateActivity 
           onSuccess={() => {
