@@ -12,6 +12,12 @@ export default function ManageActivitiesPage() {
   const router = useRouter();
   const { data: session } = useSession();
 
+  useEffect(() => {
+    if (session?.user?.role !== 'ADMIN') {
+      router.push('/activities');
+    }
+  }, [session, router]);
+
   const [activities, setActivities] = useState<Activity[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +61,7 @@ export default function ManageActivitiesPage() {
     }
   };
 
-  // Rediriger si non admin
   if (session?.user?.role !== 'ADMIN') {
-    router.push('/activities');
     return null;
   }
 

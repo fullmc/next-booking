@@ -153,7 +153,7 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Image</label>
-            <Input type="text" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
+            <Input type="text" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} disabled placeholder="Prochainement..."/>
           </div>
 
           <div className="flex gap-3 justify-end pt-4">

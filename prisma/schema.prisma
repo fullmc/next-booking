@@ -26,7 +26,7 @@ model ActivityType {
 model Activity {
   id                String        @id @default(cuid())
   name               String
-  image              String        @default("")
+  image              String        @default("https://images.unsplash.com/photo-1610337673044-720471f83677?q=80&w=3172&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
   type             ActivityType  @relation(fields: [typeId], references: [id])
   typeId           String
   available_places Int
