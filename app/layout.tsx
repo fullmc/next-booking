@@ -7,6 +7,7 @@ import { Providers } from "@/components/Providers"
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import { Toaster } from 'sonner'
 
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export default function RootLayout({
             <Navbar />
             <main>{children}</main>
           </Providers>
+          <Toaster position="top-right" richColors/>
       </body>
     </html>
   )

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ShadcnButton } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner";
 import { Message } from 'primereact/message';
 import Link from 'next/link';
 import { PulsatingButton } from '@/components/magicui/pulsating-button';
@@ -35,7 +35,6 @@ export function DialogMakeReservation({
   const [loading, setLoading] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { data: session } = useSession();
-  const { toast } = useToast();
   const router = useRouter();
 
   const handleClick = () => {
@@ -60,19 +59,16 @@ export function DialogMakeReservation({
         throw new Error(error.error || 'Erreur lors de la réservation');
       }
 
-      toast({
-        title: "Réservation confirmée",
-        description: "Votre réservation a été effectuée avec succès.",
+      toast.success("La réservation a été effectuée avec succès.", {
+        description: "La réservation a été effectuée avec succès.",
       });
 
       if (onSuccess) onSuccess();
       setShowConfirmDialog(false);
       router.push('/reservations');
     } catch (error) {
-      toast({
-        title: "Erreur",
-        description: error instanceof Error ? error.message : "Une erreur est survenue",
-        variant: "destructive",
+      toast.error(error instanceof Error ? error.message : "Une erreur est survenue", {
+        description: "La réservation n'a pas été effectuée.",
       });
     } finally {
       setLoading(false);

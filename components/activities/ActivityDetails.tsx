@@ -13,7 +13,6 @@ interface ActivityDetailsProps {
 
 export function ActivityDetails({ activity }: ActivityDetailsProps) {
   const getGradientColors = (type: string | undefined) => {
-    console.log('Type reçu:', type); // Debug
 
     switch (type) {
       case 'Survival':
@@ -46,9 +45,6 @@ export function ActivityDetails({ activity }: ActivityDetailsProps) {
   };
 
   const gradientColors = getGradientColors(activity.type?.name);
-
-  console.log('Type:', activity.type?.name); // Pour déboguer
-  console.log('Gradient Colors:', gradientColors); // Pour déboguer
 
   return (
     <NeonGradientCard 

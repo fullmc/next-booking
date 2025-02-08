@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Edit } from "lucide-react";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from 'primereact/button';
@@ -53,10 +54,16 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
       });
 
       if (!response.ok) throw new Error('Erreur lors de la mise à jour');
+      toast.success("L'activité a été mise à jour avec succès.", {
+        description: `Mise à jour de l'activité ${activity.name}`,
+      });
       
       onUpdate();
       setIsOpen(false);
     } catch (error) {
+      toast.error("Une erreur est survenue", {
+        description: "L'activité n'a pas été mise à jour.",
+      });
       console.error('Erreur:', error);
     } finally {
       setLoading(false);

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShadcnButton } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +27,6 @@ export function DialogCancelReservation({
 }: DialogCancelReservationProps) {
   const [loading, setLoading] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   const handleCancel = async () => {
@@ -45,19 +44,16 @@ export function DialogCancelReservation({
         throw new Error(data.error || 'Erreur lors de la réservation');
       }
 
-      toast({
-        title: "Réservation annulée",
-        description: "Votre réservation a été annulée avec succès.",
+      toast.success(`Annulation prise en compte.`, {
+        description: `La réservation ${activityName} a été annulée avec succès.`,
       });
 
       onCancel();
       setShowConfirmDialog(false);
       router.push('/reservations');
     } catch (error) {
-      toast({
-        title: "Erreur",
-        description: error instanceof Error ? error.message : "Une erreur est survenue",
-        variant: "destructive",
+      toast.error("Une erreur est survenue", {
+        description: error instanceof Error ? error.message : "Une erreur est survenue lors de l'annulation",
       });
     } finally {
       setLoading(false);

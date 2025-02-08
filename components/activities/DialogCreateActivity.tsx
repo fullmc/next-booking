@@ -15,6 +15,7 @@ import { ShadcnButton } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ListPlus } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
 
 interface ActivityType {
   id: string;
@@ -67,6 +68,10 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
 
       if (!response.ok) throw new Error('Erreur lors de la création');
       
+      toast.success(`Nouvelle activité créée avec succès.`, {
+        description: `Ajout de l'activité ${formData.name}`,
+      });
+      
       const newActivity = await response.json();
       onSuccess();
       setIsOpen(false);
@@ -83,7 +88,9 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
       // Redirection vers la page de l'activité
       router.push(`/activities/${newActivity.id}`);
     } catch (error) {
-      console.error('Erreur:', error);
+      toast.error(error instanceof Error ? error.message : "Une erreur est survenue", {
+        description: "L'activité n'a pas été créée.",
+      });
     } finally {
       setLoading(false);
     }

@@ -23,8 +23,11 @@ export function DialogDeleteActivity({ activityId, activityName, onDelete }: Dia
   const [open, setOpen] = useState(false);
 
   const handleDelete = async () => {
-    onDelete(activityId);
-    setOpen(false);
+    try {
+      onDelete(activityId);
+      setOpen(false);
+    } catch (error) {
+    }
   };
 
   return (
@@ -43,7 +46,13 @@ export function DialogDeleteActivity({ activityId, activityName, onDelete }: Dia
           <ShadcnButton variant="outline" onClick={() => setOpen(false)}>
             Annuler
           </ShadcnButton>
-          <ShadcnButton  onClick={handleDelete}>
+          <ShadcnButton 
+            variant="destructive"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDelete();
+            }}
+          >
             Supprimer
           </ShadcnButton>
         </DialogFooter>

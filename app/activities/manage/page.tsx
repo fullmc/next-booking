@@ -49,17 +49,15 @@ export default function ManageActivitiesPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')) {
-      try {
-        const response = await fetch(`/api/activities/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          setActivities(activities.filter(a => a.id !== id));
-        }
-      } catch (error) {
-        console.error('Erreur:', error);
+    try {
+      const response = await fetch(`/api/activities/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        setActivities(activities.filter(a => a.id !== id));
       }
+    } catch (error) {
+      console.error('Erreur:', error);
     }
   };
 

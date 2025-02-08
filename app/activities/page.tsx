@@ -133,7 +133,7 @@ export default function ActivitiesPage() {
       {/* Grille d'activités */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredActivities.map((activity) => (
-          <ShineBorder key={activity.id} className="h-fit">
+          <ShineBorder key={activity.id} className="h-fit p-0" color={["#0F172A", "#1E3A8A", "#0D9488"]}>
             <Card className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="aspect-video relative">
                 <img
@@ -172,7 +172,7 @@ export default function ActivitiesPage() {
                     </>
                   )}
                 </div>
-                <Button label="Voir" onClick={() => router.push(`/activities/${activity.id}`)} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" />
+                <Button label="Voir détails" onClick={() => router.push(`/activities/${activity.id}`)} className="bg-primary font-light text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" />
               </CardFooter>
               </div>
             </Card>
