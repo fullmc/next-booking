@@ -80,7 +80,11 @@ export default function ActivitiesPage() {
       {/* En-tête et Recherche */}
       <div className="mb-12 space-y-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold mb-4">Découvrez nos activités</h1>
+          <div className="flex flex-col">
+            <h1 className="text-4xl font-bold mb-4">Découvrez nos activités</h1>
+            <p className="text-gray-700">Plongez dans un univers où la réalité rencontre la fiction. 
+            Des expériences uniques qui repoussent les limites de votre imagination.</p>
+          </div>
           {isAdmin && (
             <Button
               onClick={() => router.push('/activities/manage')}

@@ -35,8 +35,7 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-gray-400"
           >
-            Plongez dans un univers où la réalité rencontre la fiction. 
-            Des expériences uniques qui repoussent les limites de votre imagination.
+            Et si vous plongiez dans des vies que vous ne connaissez qu'à moitié... ou que vous préférez ignorer ?
           </motion.p>
 
           <motion.button
