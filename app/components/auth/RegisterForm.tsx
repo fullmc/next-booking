@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ShadcnButton } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
 interface FormData {
   first_name: string;
@@ -93,13 +94,14 @@ export default function RegisterForm() {
       });
 
       if (res.ok) {
+        toast.success('Inscription réussie');
         router.push('/account');
       } else {
         const data = await res.json();
         setError(data.error);
       }
     } catch (error) {
-      setError('Une erreur est survenue');
+      toast.error('Une erreur est survenue');
     }
   };
 

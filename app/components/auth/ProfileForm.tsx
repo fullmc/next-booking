@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { toast } from 'sonner';
 import { ShadcnButton } from '@/components/ui/button';
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -34,14 +34,14 @@ export default function ProfileForm({ user }: { user: any }) {
       });
 
       if (res.ok) {
-        setMessage('Profil mis à jour avec succès');
+        toast.success('Profil mis à jour avec succès');
         setIsOpen(false);
         router.refresh();
       } else {
-        setError('Erreur lors de la mise à jour');
+        toast.error('Erreur lors de la mise à jour');
       }
     } catch (error) {
-      setError('Une erreur est survenue');
+      toast.error('Une erreur est survenue');
     }
   };
 

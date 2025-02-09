@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { ShadcnButton } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -17,8 +17,6 @@ import {
 export function DialogDeleteAccount() {
   const [loading, setLoading] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const { toast } = useToast();
-
   const handleDelete = async () => {
     setLoading(true);
     try {
@@ -30,17 +28,14 @@ export function DialogDeleteAccount() {
         throw new Error('Erreur lors de la suppression');
       }
 
-      toast({
-        title: "Compte supprimé",
+      toast.success("Compte supprimé", {
         description: "Votre compte a été supprimé avec succès.",
       });
 
       signOut({ callbackUrl: '/' });
     } catch (error) {
-      toast({
-        title: "Erreur",
+      toast.error("Erreur", {
         description: error instanceof Error ? error.message : "Une erreur est survenue",
-        variant: "destructive",
       });
     } finally {
       setLoading(false);

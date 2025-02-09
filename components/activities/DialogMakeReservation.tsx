@@ -97,12 +97,12 @@ export function DialogMakeReservation({
               </DialogHeader>
               <DialogFooter className="flex-col gap-2 sm:flex-row">
                 <Link href="/login" className="w-full sm:w-auto">
-                  <ShadcnButton className="w-full" onClick={() => setShowConfirmDialog(false)}>
+                  <ShadcnButton variant="outline" className="w-full border border-zinc-800" onClick={() => setShowConfirmDialog(false)}>
                     Se connecter
                   </ShadcnButton>
                 </Link>
                 <Link href="/register" className="w-full sm:w-auto">
-                  <ShadcnButton variant="outline" className="w-full" onClick={() => setShowConfirmDialog(false)}>
+                  <ShadcnButton variant="outline" className="w-full border border-zinc-800" onClick={() => setShowConfirmDialog(false)}>
                     Créer un compte
                   </ShadcnButton>
                 </Link>

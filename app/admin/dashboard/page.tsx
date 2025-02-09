@@ -3,7 +3,6 @@ import { authOptions } from "../../../app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { prisma } from "../../../lib/prisma";
 import React from "react";
-import Link from "next/link";
 
 async function getAdminStats() {
   const [userCount, reservationCount, activeReservations] = await Promise.all([
