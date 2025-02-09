@@ -47,7 +47,16 @@ export default function ReservationsPage() {
   }, []);
 
   const confirmedReservations = reservations.filter(r => r.status);
-  const cancelledReservations = reservations.filter(r => !r.status);
+  
+  const cancelledReservations = reservations
+    .filter(r => !r.status)
+    .reduce((acc: Reservation[], current) => {
+      const exists = acc.find(item => item.activity.id === current.activity.id);
+      if (!exists) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
 
   if (loading) return <div>Chargement...</div>;
 

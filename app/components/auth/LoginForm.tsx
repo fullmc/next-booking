@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { ShadcnButton } from '@/components/ui/button';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -53,12 +53,12 @@ export default function LoginForm() {
         />
       </div>
 
-      <Button
+      <ShadcnButton
         type="submit"
         className="w-fit text-white px-6 rounded"
       >
         Se connecter
-      </Button>
+      </ShadcnButton>
     </form>
   );
 } 

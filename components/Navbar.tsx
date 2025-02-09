@@ -6,11 +6,26 @@ import { useSession, signOut } from "next-auth/react"
 import { CircleUser, LogIn, LogOut, NotebookPen, Drama } from "lucide-react"
 import { TypingAnimation } from "@/components/magicui/typing-animation";
 import { ShadcnButton } from "@/components/ui/button";
-
+import { useState, useEffect } from 'react';
 
 export function Navbar() {
   const { data: session } = useSession()
   const pathname = usePathname()
+  const [confirmedReservationsCount, setConfirmedReservationsCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (session?.user) {
+      fetch('/api/reservations')
+        .then(res => res.json())
+        .then(data => {
+          const confirmedCount = data.filter((reservation: any) => reservation.status === true).length;
+          setConfirmedReservationsCount(confirmedCount);
+        })
+        .catch(console.error);
+    }
+  }, [session]);
+
+  console.log(confirmedReservationsCount)
 
   const getLinkClassName = (path: string) => {
     const baseClass = "text-sm transition-all duration-300 hover:scale-110 flex items-center gap-2"
@@ -36,7 +51,7 @@ export function Navbar() {
                   className={getLinkClassName('/reservations')}
                 >
                   <NotebookPen size={16} />
-                  Mes réservations
+                  Mes réservations ({confirmedReservationsCount})
                 </Link>
                 <Link 
                   href="/account" 
