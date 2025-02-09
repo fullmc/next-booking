@@ -51,7 +51,7 @@ export function Navbar() {
                   className={getLinkClassName('/reservations')}
                 >
                   <NotebookPen size={16} />
-                  Mes réservations ({confirmedReservationsCount})
+                  Mes réservations 
                 </Link>
                 <Link 
                   href="/account" 
@@ -60,6 +60,14 @@ export function Navbar() {
                   <CircleUser size={16} />
                   Mon compte
                 </Link>
+                {session?.user?.role === 'ADMIN' && (
+                  <Link 
+                    href="/admin/dashboard" 
+                    className={getLinkClassName('/admin/dashboard')}
+                  >
+                    Dashboard Admin
+                  </Link>
+                )}
                 <ShadcnButton
                   onClick={() => signOut()}
                   className="text-sm transition-all duration-300 hover:scale-110 border-[1.5px] border-slate-400 rounded-md px-2 py-1 bg-transparent"
