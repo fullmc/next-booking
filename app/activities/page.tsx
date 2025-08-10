@@ -17,6 +17,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { tagSeverityMapper } from '@/lib/utils';
+import Image from 'next/image';
+
 interface Activity {
   id: string;
   name: string;
@@ -38,7 +40,7 @@ export default function ActivitiesPage() {
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === 'ADMIN';
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -140,10 +142,12 @@ export default function ActivitiesPage() {
           <ShineBorder key={activity.id} className="h-fit p-0" color={["#0F172A", "#1E3A8A", "#0D9488"]}>
             <Card className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="aspect-video relative">
-                <img
+                <Image
                   alt={activity.name}
                   className="object-cover w-full h-full"
                   src={activity.image}
+                  width={500}
+                  height={500}
                 />
               </div>
               <div className="flex flex-col justify-between">

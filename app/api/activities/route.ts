@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import fs from "node:fs";
+import path from "node:path";
 
 // GET /api/activities
 export async function GET() {
@@ -12,8 +14,51 @@ export async function GET() {
       },
       orderBy: { datetime_debut: 'desc' }
     });
-    return NextResponse.json(activities);
+    const publicDir = path.join(process.cwd(), "public");
+
+    const resolveImage = (name: string, id: string, dbImage?: string | null) => {
+      const defaultPath = "/activities/default.jpg";
+      const isValidPublicPath = (p: string) => p.startsWith("/") && fs.existsSync(path.join(publicDir, p));
+
+      if (dbImage && typeof dbImage === "string" && isValidPublicPath(dbImage)) {
+        return dbImage;
+      }
+
+      const slug = name
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+      const candidates = [
+        `/activities/${id}.jpg`,
+        `/activities/${id}.jpeg`,
+        `/activities/${id}.png`,
+        `/activities/${id}.webp`,
+        `/activities/${id}.avif`,
+        `/activities/${slug}.jpg`,
+        `/activities/${slug}.jpeg`,
+        `/activities/${slug}.png`,
+        `/activities/${slug}.webp`,
+        `/activities/${slug}.avif`,
+      ];
+
+      for (const candidate of candidates) {
+        if (isValidPublicPath(candidate)) return candidate;
+      }
+
+      return defaultPath;
+    };
+
+    const activitiesWithImage = activities.map((a) => ({
+      ...a,
+      image: resolveImage(a.name, a.id, a.image),
+    }));
+
+    return NextResponse.json(activitiesWithImage);
   } catch (error) {
+    console.error('Erreur:', error);
     return NextResponse.json({ error: "Erreur lors de la récupération des activités" }, { status: 500 });
   }
 }

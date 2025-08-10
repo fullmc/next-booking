@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 }
 
 // Récupérer les réservations de l'utilisateur
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
@@ -88,6 +88,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(reservations);
   } catch (error) {
+    console.error('Erreur:', error);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 } 

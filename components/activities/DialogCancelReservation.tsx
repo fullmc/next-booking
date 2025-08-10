@@ -75,7 +75,7 @@ export function DialogCancelReservation({
           <DialogHeader>
             <DialogTitle>{activityName ? activityName : "Réservation"} </DialogTitle>
             <DialogDescription>
-              Voulez-vous confirmer l'annulation de la réservation ?
+              Voulez-vous confirmer l&apos;annulation de la réservation ?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-0">

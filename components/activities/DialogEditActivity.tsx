@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Edit } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -82,11 +81,11 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
-          <SheetTitle>Modifier l'activité</SheetTitle>
+          <SheetTitle>Modifier l&apos;activité</SheetTitle>
         </SheetHeader>
         <form onSubmit={handleSubmit} className="space-y-6 mt-8">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Nom de l'activité</label>
+            <label className="text-sm font-medium">Nom de l&apos;activité</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -159,8 +158,13 @@ export function DialogEditActivity({ activity, onUpdate }: DialogEditActivityPro
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Image</label>
-            <Input type="text" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} disabled placeholder="Prochainement..."/>
+            <label className="text-sm font-medium">Image (chemin public)</label>
+            <Input
+              type="text"
+              value={formData.image}
+              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+              placeholder="Ex: /activities/escape-room.jpg"
+            />
           </div>
 
           <div className="flex gap-3 justify-end pt-4">

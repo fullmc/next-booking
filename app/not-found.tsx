@@ -4,12 +4,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { LineShadowText } from '../components/magicui/line-shadow-text';
-import { useTheme } from 'next-themes';
-// import { MorphingText } from '../components/magicui/morphing-text';
 
 export default function NotFound() {
-  const theme = useTheme();
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
       <div className="text-center space-y-8 p-8">
@@ -32,7 +28,7 @@ export default function NotFound() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+          Désolé, la page que vous recherchez n&apos;existe pas ou a été déplacée.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,7 +39,7 @@ export default function NotFound() {
             href="/" 
             className="inline-block px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
           >
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Link>
         </motion.div>
       </div>

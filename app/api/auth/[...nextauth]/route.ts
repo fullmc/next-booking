@@ -53,7 +53,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         // Type assertion to handle the type error
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },

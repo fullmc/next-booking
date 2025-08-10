@@ -18,12 +18,13 @@ export async function PUT(req: Request) {
 
     return NextResponse.json(user);
   } catch (error) {
+    console.error('Erreur:', error);
     return NextResponse.json({ error: "Erreur de mise à jour" }, { status: 500 });
   }
 }
 
 // Suppression du profil
-export async function DELETE(req: Request) {
+export async function DELETE() {
   try {
     const session = await getServerSession();
     if (!session) {
@@ -36,6 +37,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ message: "Compte supprimé" });
   } catch (error) {
+    console.error('Erreur:', error);
     return NextResponse.json({ error: "Erreur de suppression" }, { status: 500 });
   }
 } 

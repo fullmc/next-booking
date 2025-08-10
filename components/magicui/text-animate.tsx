@@ -148,7 +148,7 @@ const defaultItemAnimationVariants: Record<
     container: defaultContainerVariants,
     item: {
       hidden: { opacity: 0, filter: "blur(10px)", y: 20 },
-      show: (delay: number) => ({
+      show: () => ({
         opacity: 1,
         filter: "blur(0px)",
         y: 0,
@@ -174,7 +174,7 @@ const defaultItemAnimationVariants: Record<
     container: defaultContainerVariants,
     item: {
       hidden: { opacity: 0, filter: "blur(10px)", y: -20 },
-      show: (delay: number) => ({
+      show: () => ({
         opacity: 1,
         filter: "blur(0px)",
         y: 0,
@@ -306,14 +306,14 @@ const defaultItemAnimationVariants: Record<
 
 export function TextAnimate({
   children,
-  delay = 0,
-  duration = 0.3,
+  delay,
+  duration,
   variants,
   className,
   segmentClassName,
   as: Component = "p",
   startOnView = true,
-  once = false,
+  once,
   by = "word",
   animation = "fadeIn",
   href,
@@ -344,6 +344,9 @@ export function TextAnimate({
       }
     : { container: defaultContainerVariants, item: defaultItemVariants };
 
+  const containerVariants = finalVariants.container;
+  const itemVariants = variants ?? finalVariants.item;
+
   let segments: string[] = [];
   switch (by) {
     case "word":
@@ -364,11 +367,13 @@ export function TextAnimate({
   return (
     <AnimatePresence mode="popLayout">
       <MotionComponent
-        variants={finalVariants.container}
+        variants={containerVariants}
         initial="hidden"
         whileInView={startOnView ? "show" : undefined}
         animate={startOnView ? undefined : "show"}
         exit="exit"
+        viewport={startOnView ? { once: Boolean(once) } : undefined}
+        transition={duration || delay ? { duration, delay } : undefined}
         className={cn("whitespace-pre-wrap", className)}
         href={href}
         {...props}
@@ -376,8 +381,8 @@ export function TextAnimate({
         {segments.map((segment, i) => (
           <motion.span
             key={`${by}-${segment}-${i}`}
-            variants={finalVariants.item}
-            custom={i * staggerTimings[by]}
+            variants={itemVariants}
+            custom={i * staggerTimings[by] + (delay ?? 0)}
             className={cn(
               by === "line" ? "block" : "inline-block whitespace-pre",
               segmentClassName,

@@ -35,7 +35,7 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-gray-400"
           >
-            Et si vous plongiez dans des vies que vous ne connaissez qu'à moitié... ou que vous préférez ignorer ?
+            Et si vous plongiez dans des vies que vous ne connaissez qu&apos;à moitié... ou que vous préférez ignorer ?
           </motion.p>
 
           <motion.button
@@ -61,7 +61,7 @@ export default function Home() {
         <div className="flex h-[500px] w-full justify-center gap-4 lg:h-[250px] lg:flex-row">
           <MagicCard gradientColor="#0A1F4E" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
             <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-blue-500">Immersion totale</h3>
-            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Vivez des scénarios si réalistes que vous oublierez la frontière entre jeu et réalité. Saurez-vous tenir jusqu'au bout ?</p>
+            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Vivez des scénarios si réalistes que vous oublierez la frontière entre jeu et réalité. Saurez-vous tenir jusqu&apos;au bout ?</p>
           </MagicCard>
           <MagicCard gradientColor="#C0C0C0" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
             <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-neutral-950">Technologie avancée</h3>
@@ -71,12 +71,12 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="text-xl transition-colors duration-500 group-hover:text-neutral-300"
             >
-              Explorez des réalités cachées et percevez le monde sous un angle totalement nouveau. Prêts à voir l'invisible ?
+              Explorez des réalités cachées et percevez le monde sous un angle totalement nouveau. Prêts à voir l&apos;invisible ?
             </motion.p>
           </MagicCard>
           <MagicCard gradientColor="#8B0000" className="flex-col items-center justify-center text-2xl px-6 max-w-sm text-black">
-            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-red-500">Plongez dans l'abîme</h3>
-            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Du refuge apaisant à l’horreur pure : repoussez vos limites, jusqu'à ce que le courage devienne une question de survie ...</p>
+            <h3 className="font-medium pb-6 tracking-wide transition-colors duration-500 group-hover:text-red-500">Plongez dans l&apos;abîme</h3>
+            <p className="text-xl transition-colors duration-500 group-hover:text-neutral-300">Du refuge apaisant à l&apos;horreur pure : repoussez vos limites, jusqu&apos;à ce que le courage devienne une question de survie ...</p>
           </MagicCard>
         </div>
       </motion.div>

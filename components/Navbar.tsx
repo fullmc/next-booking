@@ -7,6 +7,7 @@ import { CircleUser, LogIn, LogOut, NotebookPen, Drama } from "lucide-react"
 import { TypingAnimation } from "@/components/magicui/typing-animation";
 import { ShadcnButton } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
+import { Reservation } from "@/types/reservations";
 
 export function Navbar() {
   const { data: session } = useSession()
@@ -18,7 +19,7 @@ export function Navbar() {
       fetch('/api/reservations')
         .then(res => res.json())
         .then(data => {
-          const confirmedCount = data.filter((reservation: any) => reservation.status === true).length;
+          const confirmedCount = data.filter((reservation: Reservation) => reservation.status === true).length;
           setConfirmedReservationsCount(confirmedCount);
         })
         .catch(console.error);

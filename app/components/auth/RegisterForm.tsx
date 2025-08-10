@@ -101,6 +101,7 @@ export default function RegisterForm() {
         setError(data.error);
       }
     } catch (error) {
+      console.error('Erreur:', error);
       toast.error('Une erreur est survenue');
     }
   };
@@ -174,7 +175,7 @@ export default function RegisterForm() {
         className="w-fit"
         disabled={!isFormValid}
       >
-        S'inscrire
+        S&apos;inscrire
       </ShadcnButton>
     </form>
   );

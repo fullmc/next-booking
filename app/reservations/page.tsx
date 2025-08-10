@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DialogCancelReservation } from "@/components/activities/DialogCancelReservation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tag } from 'primereact/tag';
 import { tagSeverityMapper } from '@/lib/utils';
-import { formatDate, formatTime, formatDuration } from '@/lib/formatters';
+import { formatDate, formatTime} from '@/lib/formatters';
 
 interface Reservation {
   id: string;

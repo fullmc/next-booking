@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import fs from "node:fs";
+import path from "node:path";
 
 // PUT /api/activities/[id]
 export async function PUT(
@@ -20,10 +22,13 @@ export async function PUT(
       data: {
         name: data.name,
         description: data.description,
-        available_places: data.available_places,
-        duration: data.duration,
+        available_places: typeof data.available_places === 'string' ? parseInt(data.available_places) : data.available_places,
+        duration: typeof data.duration === 'string' ? parseInt(data.duration) : data.duration,
         datetime_debut: new Date(data.datetime_debut),
         typeId: data.typeId,
+        image: data.image && typeof data.image === 'string' && data.image.trim() !== ''
+          ? data.image.trim()
+          : '/activities/default.jpg',
       },
     });
 
@@ -54,6 +59,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('Erreur:', error);
     return NextResponse.json(
       { error: "Erreur lors de la suppression de l'activité" },
       { status: 500 }
@@ -83,7 +89,34 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(activity);
+    const publicDir = path.join(process.cwd(), "public");
+    const isValidPublicPath = (p: string) => p.startsWith("/") && fs.existsSync(path.join(publicDir, p));
+    const defaultPath = "/activities/default.jpg";
+
+    const slug = activity.name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    const candidates = [
+      activity.image ?? "",
+      `/activities/${activity.id}.jpg`,
+      `/activities/${activity.id}.jpeg`,
+      `/activities/${activity.id}.png`,
+      `/activities/${activity.id}.webp`,
+      `/activities/${activity.id}.avif`,
+      `/activities/${slug}.jpg`,
+      `/activities/${slug}.jpeg`,
+      `/activities/${slug}.png`,
+      `/activities/${slug}.webp`,
+      `/activities/${slug}.avif`,
+    ].filter(Boolean) as string[];
+
+    const resolvedImage = candidates.find(isValidPublicPath) ?? defaultPath;
+
+    return NextResponse.json({ ...activity, image: resolvedImage });
   } catch (error) {
     console.error('Erreur:', error);
     return NextResponse.json(

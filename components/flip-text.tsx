@@ -22,7 +22,6 @@ export function FlipText({
     visible: { rotateX: 0, opacity: 1 },
   },
   className,
-  style,
 }: FlipTextProps) {
   return (
     <div className="flex justify-center space-x-2">

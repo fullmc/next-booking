@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +26,7 @@ export function DialogDeleteActivity({ activityId, activityName, onDelete }: Dia
       onDelete(activityId);
       setOpen(false);
     } catch (error) {
+      console.error('Erreur:', error);
     }
   };
 

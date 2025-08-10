@@ -1,12 +1,14 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DialogMakeReservation } from '@/components/activities/DialogMakeReservation';
 import { tagSeverityMapper } from '@/lib/utils';
 import { Tag } from 'primereact/tag';
 import { formatDate, formatTime, formatDuration } from '@/lib/formatters';
 import { Activity } from '@/types/activity'
 import { NeonGradientCard } from '@/components/magicui/neon-gradient-card';
+import Image from 'next/image';
+
 interface ActivityDetailsProps {
   activity: Activity;
 }
@@ -90,10 +92,12 @@ export function ActivityDetails({ activity }: ActivityDetailsProps) {
 
       <CardContent className="space-y-6">
         <div className="aspect-video relative bg-gray-100 rounded-lg overflow-hidden">
-          <img
+          <Image
             alt={activity.name}
             src={activity.image}
             className="object-cover w-full h-full"
+            width={500}
+            height={500}
           />
         </div>
         <p className="text-gray-700 leading-relaxed">{activity.description}</p>

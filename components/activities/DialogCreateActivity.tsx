@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -110,7 +109,7 @@ export function DialogCreateActivity({ onSuccess }: DialogCreateActivityProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6 mt-8">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Nom de l'activité</label>
+            <label className="text-sm font-medium">Nom de l&apos;activité</label>
             <Input
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}

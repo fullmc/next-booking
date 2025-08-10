@@ -10,10 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogDeleteAccount } from '@/components/account/DialogDeleteAccount';
 
-export default function ProfileForm({ user }: { user: any }) {
+export default function ProfileForm({ user }: { user: User }) {
   const router = useRouter();
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, ] = useState('');
+  const [message, ] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,6 +41,7 @@ export default function ProfileForm({ user }: { user: any }) {
         toast.error('Erreur lors de la mise à jour');
       }
     } catch (error) {
+      console.error('Erreur:', error);
       toast.error('Une erreur est survenue');
     }
   };

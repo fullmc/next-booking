@@ -22,7 +22,7 @@ export default function ManageActivitiesPage() {
 
   const [activities, setActivities] = useState<Activity[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   
   const fetchActivities = async () => {
     const response = await fetch('/api/activities');

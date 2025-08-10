@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { first_name, last_name, email, password } = await req.json();
+    const { first_name, last_name, email, password: plainPassword } = await req.json();
     
     // Vérifier si l'utilisateur existe déjà
     const existingUser = await prisma.user.findUnique({
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     }
 
     // Hasher le mot de passe
-    const hashedPassword = await hash(password, 10);
+    const hashedPassword = await hash(plainPassword, 10);
 
     // Créer l'utilisateur
     const user = await prisma.user.create({
@@ -32,8 +32,13 @@ export async function POST(req: Request) {
       },
     });
 
-    const { password: _, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+    return NextResponse.json({
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      role: user.role,
+    });
   } catch (error) {
     console.error('Erreur:', error);
     return NextResponse.json(
